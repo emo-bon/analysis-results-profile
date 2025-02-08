@@ -1,0 +1,71 @@
+{#- 
+Template: functional-analysis.ldt.ttl.j2 
+Description: Template to generate triples from functional-analysis results in context of EMOBON.
+Input/Sets:
+    - "./functional-annotation/DBB.merged.summary.go" as go_annotations
+    - "./functional-annotation/DBB.merged.summary.ips" as ips_annotations
+    - "./functional-annotation/DBB.merged.summary.ko" as kegg_annotations
+    - "./functional-annotation/DBB.merged.summary.pfam" as pfam_annotations
+    - "./DBB.merged.emapper.summary.eggnog" as eggnog_annotations
+
+Variable:
+    - baseref
+    - source_mat_id ~ the id of the sample (~see 'name' of the dataset in ro-crate-metadata.json)
+-#}
+
+{% include './includes/prefixes.ttl' %}
+
+<{{baseref}}analysis-results-crate/functional-annotations/{{source_mat_id}}> 
+    # a sosa:Sample , prov:Entity ;
+
+    {# GO_annotations #}
+    emobon-annotation:functionalAnnotation 
+    {%- for row in sets['go_annotations'] %}        {# might need to adapt code to return list of unique name/IDs .... #}
+    [
+        a emobon-annotation:FunctionalAnnotation ;
+        name {{row.sub_process | xsd('string')}} ; 
+        identifier <https://www.ebi.ac.uk/QuickGO/term/{{row.ID}}> ;
+    ] {{ ';' if loop.last else ',' }}
+    {%- endfor %}
+
+    {# InterPro_annotations #}
+    emobon-annotation:functionalAnnotation 
+    {%- for row in sets['ips_annotations'] %}        
+    [
+        a emobon-annotation:FunctionalAnnotation ;
+        name {{row['sequence domain/region name'] | xsd('string')}} ;                   {# to check if name works #}
+        identifier <https://www.ebi.ac.uk/interpro/entry/InterPro/{{row.ID}}/> ;
+    ] {{ ';' if loop.last else ',' }}
+    {%- endfor %}
+
+    {# KEGG_annotations #}
+    emobon-annotation:functionalAnnotation 
+    {%- for row in sets['kegg_annotations'] %}
+    [
+        a emobon-annotation:FunctionalAnnotation ;
+        name {{row.name | xsd('string')}} ; 
+        identifier <https://www.genome.jp/dbget-bin/www_bget?{{row.ID}} > ;             {# to check if correct/persistent url #}
+    ] {{ ';' if loop.last else ',' }}
+    {%- endfor %}
+
+    {# PFAM_annotations #}
+    emobon-annotation:functionalAnnotation 
+    {%- for row in sets['pfam_annotations'] %}
+    [
+        a emobon-annotation:FunctionalAnnotation ;
+        name {{row.name | xsd('string')}} ; 
+        identifier <https://www.ebi.ac.uk/interpro/entry/pfam/{{row.ID}}/> ;
+    ] {{ ';' if loop.last else ',' }}
+    {%- endfor %}
+
+    {# EGGNOG_annotations #}
+    emobon-annotation:functionalAnnotation 
+    {%- for row in sets['eggnog_annotations'] %}
+    [
+        a emobon-annotation:FunctionalAnnotation ;
+        name {{row.name | xsd('string')}} ; 
+        identifier <http://eggnog6.embl.de/search/ogs/{{row.ID}}/> ; {# need to check if correct/persistent URL for these ... #}
+    ] {{ ';' if loop.last else ',' }}
+    {%- endfor %}
+
+.

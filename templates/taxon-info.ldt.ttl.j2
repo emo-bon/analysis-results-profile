@@ -1,0 +1,52 @@
+{#- 
+Template: taxon-info.ldt.jsonld.j2 
+Description: Template to generate triples taxonomy-summary data resulting from analysis performed on sample; in context of EMOBON.
+Input:
+    - ./taxonomy-summary/LSU/DBB.merged_LSU.fasta.mseq.tsv (or is it ./taxonomy-summary/LSU/DBH.merged_LSU.fasta.mseq.tsv?)
+    - 
+Variable:
+    - baseref
+    - source_mat_id ~ the id of the sample (~see 'name' of the dataset in ro-crate-metadata.json)
+-#}
+
+{% include './includes/prefixes.ttl' %}
+
+<{{baseref}}analysis-results-crate/taxonomy-summary/{{source_mat_id}}> 
+    # a sosa:Sample , prov:Entity ;
+    {# potentially for-loop needed #}
+    {%- if _.taxonomy %}
+    sosa:isSampleOf [
+        a ro:Taxon , dct:Taxon , sosa:FeatureOfInterest ;
+        dct:identifier <https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{_.taxid}}> ;
+        {%- set taxonomy_array = _.taxonomy.split(';') %}
+        {% set taxon_item = taxonomy_array[-1] %}
+        {% set taxon_rank_name = taxon_item.split('__') %}
+        {% set taxon_name = taxon_rank_name[-1] %}
+        {% set taxon_rank = taxon_rank_name[-2] %}
+        
+        {%- if taxon_name | length > 0 %}
+        dct:title "{{ taxon_name }}" ;
+        dct:scientificName "{{ taxon_name }}" ;
+        {%- endif %}
+        
+        {%- if taxon_rank == 'sk' %}
+        dct:taxonRank "super kingdom" ;
+        {%- elif taxon_rank == 'k' %}
+        dct:taxonRank "kingdom" ;
+        {%- elif taxon_rank == 'p' %}
+        dct:taxonRank "phylum" ;
+        {%- elif taxon_rank == 'c' %}
+        dct:taxonRank "class" ;
+        {%- elif taxon_rank == 'o' %}
+        dct:taxonRank "order" ;
+        {%- elif taxon_rank == 'f' %}
+        dct:taxonRank "family" ;
+        {%- elif taxon_rank == 'g' %}
+        dct:taxonRank "genus" ;
+        {%- elif taxon_rank == 's' %}
+        dct:taxonRank "species" ;
+        {%- endif %}
+    ] ;
+
+    {#- other properties in file: 'LSU_rRNA', 'OTU ID'; not sure if relevant... #}
+    {%- endif %} .
