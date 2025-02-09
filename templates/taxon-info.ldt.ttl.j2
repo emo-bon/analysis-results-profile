@@ -1,17 +1,20 @@
 {#- 
-Template: taxon-info.ldt.jsonld.j2 
+Template: taxon-info.ldt.ttl.j2 
 Description: Template to generate triples taxonomy-summary data resulting from analysis performed on sample; in context of EMOBON.
 Input:
     - ./taxonomy-summary/LSU/DBB.merged_LSU.fasta.mseq.tsv (or is it ./taxonomy-summary/LSU/DBH.merged_LSU.fasta.mseq.tsv?)
     - 
 Variable:
-    - baseref
+    - baseref ?
     - source_mat_id ~ the id of the sample (~see 'name' of the dataset in ro-crate-metadata.json)
+    - replicate
 -#}
 
 {% include './includes/prefixes.ttl' %}
 
-<{{baseref}}analysis-results-crate/taxonomy-summary/{{source_mat_id}}> 
+@base <http://data.emobon.embrc.eu/sample/{{source_mat_id}}/{{replicate}}> .
+
+<> 
     # a sosa:Sample , prov:Entity ;
     {# potentially for-loop needed #}
     {%- if _.taxonomy %}

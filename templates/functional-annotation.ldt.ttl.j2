@@ -1,5 +1,5 @@
 {#- 
-Template: functional-analysis.ldt.ttl.j2 
+Template: functional-annotation.ldt.ttl.j2 
 Description: Template to generate triples from functional-analysis results in context of EMOBON.
 Input/Sets:
     - "./functional-annotation/DBB.merged.summary.go" as go_annotations
@@ -9,13 +9,16 @@ Input/Sets:
     - "./DBB.merged.emapper.summary.eggnog" as eggnog_annotations
 
 Variable:
-    - baseref
+    - baseref ?
     - source_mat_id ~ the id of the sample (~see 'name' of the dataset in ro-crate-metadata.json)
+    - replicate
 -#}
 
 {% include './includes/prefixes.ttl' %}
 
-<{{baseref}}analysis-results-crate/functional-annotations/{{source_mat_id}}> 
+@base <http://data.emobon.embrc.eu/sample/{{_.source_mat_id}}/{{_.replicate}}> .
+
+<> 
     # a sosa:Sample , prov:Entity ;
 
     {# GO_annotations #}
