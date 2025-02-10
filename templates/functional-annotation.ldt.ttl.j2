@@ -10,13 +10,16 @@ Input/Sets:
 
 Variable:
     - baseref ?
+    - obs_id
+    - env_package
     - source_mat_id ~ the id of the sample (~see 'name' of the dataset in ro-crate-metadata.json)
-    - replicate
+    
+
 -#}
 
 {% include './includes/prefixes.ttl' %}
 
-@base <http://data.emobon.embrc.eu/sample/{{_.source_mat_id}}/{{_.replicate}}> .
+@base <http://data.emobon.embrc.eu/observatory-{{obs_id}}-crate/{{env_package}}/sampling/{{source_mat_id}}> .
 
 <> 
     # a sosa:Sample , prov:Entity ;
