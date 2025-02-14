@@ -18,16 +18,21 @@ Variable:
 <>
     a emobon-product:TaxonomySummary ; 
     emobon-product:ofSample <http://data.emobon.embrc.eu/observatory-{{obs_id}}-crate/{{env_package}}/sample/{{source_mat_id}}> ; 
+    emobon-product:enaNumber {{ENAnumber | xsd("string")}} ; 
 
-    emobon-product:includedtaxa? ...
+    emobon-product:identifiedTaxa <https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{_.taxid}}> ; 
+    {#- other properties in file: 'LSU_rRNA', 'OTU ID'; not sure if relevant... #}
 .
 
 <http://data.emobon.embrc.eu/observatory-{{obs_id}}-crate/{{env_package}}/sample/{{source_mat_id}}> .
-    {# potentially for-loop needed #}
+    {# potentially for-loop needed --> iter mode different between lines 18-25 and 27-end !!#}
     {%- if _.taxonomy %}
-    sosa:isSampleOf [
-        a ro:Taxon , dct:Taxon , sosa:FeatureOfInterest ;
-        dct:identifier <https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{_.taxid}}> ;
+    sosa:isSampleOf <https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{_.taxid}}>
+    {%- endif %} 
+.
+
+<https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{_.taxid}}>
+    a ro:Taxon , dct:Taxon , sosa:FeatureOfInterest ;
         {%- set taxonomy_array = _.taxonomy.split(';') %}
         {% set taxon_item = taxonomy_array[-1] %}
         {% set taxon_rank_name = taxon_item.split('__') %}
@@ -56,7 +61,4 @@ Variable:
         {%- elif taxon_rank == 's' %}
         dct:taxonRank "species" ;
         {%- endif %}
-    ] ;
-
-    {#- other properties in file: 'LSU_rRNA', 'OTU ID'; not sure if relevant... #}
-    {%- endif %} .
+.
