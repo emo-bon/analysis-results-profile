@@ -13,10 +13,16 @@ Variable:
 
 {% include './includes/prefixes.ttl' %}
 
-@base <http://data.emobon.embrc.eu/observatory-{{obs_id}}-crate/{{env_package}}/sampling/{{source_mat_id}}> .
+@base <http://data.emobon.embrc.eu/analysis-results-{{cluster}}-crate/{{genoscopeID}}/taxonomy-summary>
 
-<> 
-    # a sosa:Sample , prov:Entity ;
+<>
+    a emobon-product:TaxonomySummary ; 
+    emobon-product:ofSample <http://data.emobon.embrc.eu/observatory-{{obs_id}}-crate/{{env_package}}/sample/{{source_mat_id}}> ; 
+
+    emobon-product:includedtaxa? ...
+.
+
+<http://data.emobon.embrc.eu/observatory-{{obs_id}}-crate/{{env_package}}/sample/{{source_mat_id}}> .
     {# potentially for-loop needed #}
     {%- if _.taxonomy %}
     sosa:isSampleOf [

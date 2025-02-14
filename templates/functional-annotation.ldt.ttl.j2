@@ -21,16 +21,16 @@ Variable:
 
 {% include './includes/prefixes.ttl' %}
 
-@base <http://data.emobon.embrc.eu/analysis-results-{{cluster}}-crate/{{genoscopeID}}/products>
+@base <http://data.emobon.embrc.eu/analysis-results-{{cluster}}-crate/{{genoscopeID}}/functional-annotation>
 
 {# GO_annotations #}
 {%- for row in sets['go_annotations'] %}  {# might need to adapt code to return list of unique name/IDs .... ~ unique_pattern ~ though code controlled by Cymon #}
 <#{{row.ID}}> 
-    a emobon-annotation:FunctionalAnnotation , emobon-annotation:MetaGoFlowProduct ; 
-    dct:type emobon-annotation:GO ; 
+    a emobon-product:FunctionalAnnotation ; 
+    dct:type emobon-product:GO ; 
 
-    emobon-annotation:ofSample <http://data.emobon.embrc.eu/observatory-{{obs_id}}-crate/{{env_package}}/sample/{{source_mat_id}}> ;
-    emobon-annotation:enaNumber {{ENAnumber | xsd("string")}} ; 
+    emobon-product:ofSample <http://data.emobon.embrc.eu/observatory-{{obs_id}}-crate/{{env_package}}/sample/{{source_mat_id}}> ;
+    emobon-product:enaNumber {{ENAnumber | xsd("string")}} ; 
     
     dct:isPartOf <> ; 
 
@@ -43,11 +43,11 @@ Variable:
 {# InterPro_annotations #}
 {%- for row in sets['ips_annotations'] %}
 <#{{row.ID}}> 
-    a emobon-annotation:FunctionalAnnotation , emobon-annotation:MetaGoFlowProduct ; 
-    dct:type emobon-annotation:InterPro ; 
+    a emobon-product:FunctionalAnnotation ; 
+    dct:type emobon-product:InterPro ; 
 
-    emobon-annotation:ofSample <http://data.emobon.embrc.eu/observatory-{{obs_id}}-crate/{{env_package}}/sample/{{source_mat_id}}> ;
-    emobon-annotation:enaNumber {{ENAnumber | xsd("string")}} ; 
+    emobon-product:ofSample <http://data.emobon.embrc.eu/observatory-{{obs_id}}-crate/{{env_package}}/sample/{{source_mat_id}}> ;
+    emobon-product:enaNumber {{ENAnumber | xsd("string")}} ; 
     
     dct:isPartOf <> ; 
 
@@ -59,11 +59,11 @@ Variable:
 {# KEGG_annotations #}
 {%- for row in sets['kegg_annotations'] %}
 <#{{row.ID}}> 
-    a emobon-annotation:FunctionalAnnotation , emobon-annotation:MetaGoFlowProduct ; 
-    dct:type emobon-annotation:KEGG ; 
+    a emobon-product:FunctionalAnnotation ; 
+    dct:type emobon-product:KEGG ; 
 
-    emobon-annotation:ofSample <http://data.emobon.embrc.eu/observatory-{{obs_id}}-crate/{{env_package}}/sample/{{source_mat_id}}> ;
-    emobon-annotation:enaNumber {{ENAnumber | xsd("string")}} ; 
+    emobon-product:ofSample <http://data.emobon.embrc.eu/observatory-{{obs_id}}-crate/{{env_package}}/sample/{{source_mat_id}}> ;
+    emobon-product:enaNumber {{ENAnumber | xsd("string")}} ; 
     
     dct:isPartOf <> ; 
 
@@ -75,11 +75,11 @@ Variable:
 {# PFAM_annotations #}
 {%- for row in sets['pfam_annotations'] %}
 <#{{row.ID}}> 
-    a emobon-annotation:FunctionalAnnotation , emobon-annotation:MetaGoFlowProduct ; 
-    dct:type emobon-annotation:PFAM ; 
+    a emobon-product:FunctionalAnnotation ; 
+    dct:type emobon-product:PFAM ; 
 
-    emobon-annotation:ofSample <http://data.emobon.embrc.eu/observatory-{{obs_id}}-crate/{{env_package}}/sample/{{source_mat_id}}> ;
-    emobon-annotation:enaNumber {{ENAnumber | xsd("string")}} ; 
+    emobon-product:ofSample <http://data.emobon.embrc.eu/observatory-{{obs_id}}-crate/{{env_package}}/sample/{{source_mat_id}}> ;
+    emobon-product:enaNumber {{ENAnumber | xsd("string")}} ; 
     
     dct:isPartOf <> ; 
 
@@ -91,11 +91,11 @@ Variable:
 {# EGGNOG_annotations #}
 {%- for row in sets['eggnog_annotations'] %}
 <#{{row.ID}}> 
-    a emobon-annotation:FunctionalAnnotation , emobon-annotation:MetaGoFlowProduct ; 
-    dct:type emobon-annotation:EGGNOG ; 
+    a emobon-product:FunctionalAnnotation ; 
+    dct:type emobon-product:EGGNOG ; 
 
-    emobon-annotation:ofSample <http://data.emobon.embrc.eu/observatory-{{obs_id}}-crate/{{env_package}}/sample/{{source_mat_id}}> ;
-    emobon-annotation:enaNumber {{ENAnumber | xsd("string")}} ; 
+    emobon-product:ofSample <http://data.emobon.embrc.eu/observatory-{{obs_id}}-crate/{{env_package}}/sample/{{source_mat_id}}> ;
+    emobon-product:enaNumber {{ENAnumber | xsd("string")}} ; 
     
     dct:isPartOf <> ; 
 
