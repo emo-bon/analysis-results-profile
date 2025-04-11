@@ -1,15 +1,15 @@
 {#- 
-Template: functional-annotation.ldt.ttl
+Template: functional-annotation.ldt.ttl.j2 
 Description: Template to generate triples from functional-analysis results in context of EMOBON.
-Input:
-    (none specified)
-Sets:
-    - go_annotations = "./functional-annotation/DBB.merged.summary.go"
-    - ips_annotations = "./functional-annotation/DBB.merged.summary.ips"
-    - kegg_annotations = "./functional-annotation/DBB.merged.summary.ko"
-    - pfam_annotations = "./functional-annotation/DBB.merged.summary.pfam"
-    - eggnog_annotations = "./DBB.merged.emapper.summary.eggnog"
-Variables:
+Input/Sets:
+    - "./functional-annotation/DBB.merged.summary.go" as go_annotations
+    - "./functional-annotation/DBH.merged.summary.go_slim" as goslim_annotations
+    - "./functional-annotation/DBB.merged.summary.ips" as ips_annotations
+    - "./functional-annotation/DBB.merged.summary.ko" as kegg_annotations
+    - "./functional-annotation/DBB.merged.summary.pfam" as pfam_annotations
+    - "./DBB.merged.emapper.summary.eggnog" as eggnog_annotations
+
+Variable:
     - uri_to_crate
     - enanumber
     - obs_id
@@ -31,23 +31,41 @@ Variables:
 {%- for row in sets['go_annotations'] %}
 <#{{row.ID}}> 
     a prod:FunctionalAnnotation ; 
-    dct:type prod:GO ; 
+    dct:type prod_vocab:GO ; 
 
     prod:ofSample {{ uri.sample(obs_id, env_package, source_mat_id) }} ;
 
     dct:title {{row.sub_process | xsd('string')}} ; 
+    prod:name {{row.sub_process | xsd('string')}} ; 
+    prod:aspect {{row.process | xsd('string')}} ; 
     dct:identifier <https://www.ebi.ac.uk/QuickGO/term/{{row.ID}}> ;
 
     dct:isPartOf <> ; 
 .
 {%- endfor %}
 
+{# GOslim_annotations #}
+{%- for row in sets['goslim_annotations'] %}
+<#{{row.ID}}> 
+    a prod:FunctionalAnnotation ; 
+    dct:type prod_vocab:GO_SLIM ; 
+
+    prod:ofSample {{ uri.sample(obs_id, env_package, source_mat_id) }} ;
+
+    dct:title {{row.sub_process | xsd('string')}} ; 
+    prod:name {{row.sub_process | xsd('string')}} ; 
+    prod:aspect {{row.process | xsd('string')}} ; 
+    dct:identifier <https://www.ebi.ac.uk/QuickGO/term/{{row.ID}}> ;
+
+    dct:isPartOf <> ; 
+.
+{%- endfor %}
 
 {# InterPro_annotations #}
 {%- for row in sets['ips_annotations'] %}
 <#{{row.ID}}> 
     a prod:FunctionalAnnotation ; 
-    dct:type prod:InterPro ; 
+    dct:type prod_vocab:InterPro ; 
 
     prod:ofSample {{ uri.sample(obs_id, env_package, source_mat_id) }} ;  
 
@@ -62,7 +80,7 @@ Variables:
 {%- for row in sets['kegg_annotations'] %}
 <#{{row.ID}}> 
     a prod:FunctionalAnnotation ; 
-    dct:type prod:KEGG ; 
+    dct:type prod_vocab:KEGG ; 
 
     prod:ofSample {{ uri.sample(obs_id, env_package, source_mat_id) }} ;
     
@@ -77,7 +95,7 @@ Variables:
 {%- for row in sets['pfam_annotations'] %}
 <#{{row.ID}}> 
     a prod:FunctionalAnnotation ; 
-    dct:type prod:PFAM ; 
+    dct:type prod_vocab:PFAM ; 
 
     prod:ofSample {{ uri.sample(obs_id, env_package, source_mat_id) }} ;
 
@@ -92,7 +110,7 @@ Variables:
 {%- for row in sets['eggnog_annotations'] %}
 <#{{row.ID}}> 
     a prod:FunctionalAnnotation ; 
-    dct:type prod:EGGNOG ; 
+    dct:type prod_vocab:EGGNOG ; 
 
     prod:ofSample {{ uri.sample(obs_id, env_package, source_mat_id) }} ;
 
