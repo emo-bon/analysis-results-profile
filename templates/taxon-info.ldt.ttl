@@ -41,6 +41,7 @@ Variable:
     a dwc:Taxon, schema:Taxon ;
         {%- set taxonomy_array = lsu_item.taxonomy.split(';') %}
         {%- set taxon_item = taxonomy_array[-1] %}
+        {%- set taxon_classification = taxonomy_array[:-1] %}
         {%- set taxon_rank_name = taxon_item.split('__') %}
         {%- set taxon_name = taxon_rank_name[-1] %}
         {%- set taxon_rank = taxon_rank_name[-2] %}
@@ -65,6 +66,10 @@ Variable:
         dwc:taxonRank 'genus'^^xsd:string ;
         {%- elif taxon_rank == 's' %}
         dwc:taxonRank 'species'^^xsd:string ;
+        {%- endif %}
+
+        {%- if taxon_classification | length > 0 %}
+        dwc:higherClassification {{ taxon_classification.join(' | ') | xsd("string") }} ;
         {%- endif %}
 .
 {%- endif %}
@@ -87,6 +92,7 @@ Variable:
     a dwc:Taxon, schema:Taxon ;
         {%- set taxonomy_array = ssu_item.taxonomy.split(';') %}
         {%- set taxon_item = taxonomy_array[-1] %}
+        {%- set taxon_classification = taxonomy_array[:-1] %}
         {%- set taxon_rank_name = taxon_item.split('__') %}
         {%- set taxon_name = taxon_rank_name[-1] %}
         {%- set taxon_rank = taxon_rank_name[-2] %}
@@ -111,6 +117,10 @@ Variable:
         dwc:taxonRank 'genus'^^xsd:string ;
         {%- elif taxon_rank == 's' %}
         dwc:taxonRank 'species'^^xsd:string ;
+        {%- endif %}
+
+        {%- if taxon_classification | length > 0 %}
+        dwc:higherClassification {{ taxon_classification.join(' | ') | xsd("string") }} ;
         {%- endif %}
 .
 {%- endif %}
