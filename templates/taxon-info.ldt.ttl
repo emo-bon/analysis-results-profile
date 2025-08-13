@@ -25,11 +25,11 @@ Variable:
 {%- endif %}
 
 {%- for lsu_item in sets['lsu_taxinfo'] %}
-<#{{lsu_item.taxid}}>
+<#{{lsu_item.OTU_ID}}>
     a prod:TaxonomicAnnotation ; 
     prod:ofSample {{ uri.sample(obs_id, env_package, source_mat_id) }} ;
-    dct:identifier <https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{lsu_item.taxid}}> ; 
-    prod:otuID {{lsu_item.OTU_ID | xsd("integer")}} ; 
+    dct:identifier <https://www.ncbi.nlm.nih.gov/taxonomy/?term={{lsu_item.taxid}}> ; 
+    prod:otuID {{lsu_item.OTU_ID | xsd("integer")}} ;  
     prod:rRNA {{lsu_item.rRNA | xsd("double")}} ; 
     prod:geneticMarker prod_vocab:LSU ;
 
@@ -37,7 +37,7 @@ Variable:
 .
 
 {%- if lsu_item.taxid %}
-<https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{lsu_item.taxid}}>
+<https://www.ncbi.nlm.nih.gov/taxonomy/?term={{lsu_item.taxid}}>
     a dwc:Taxon, schema:Taxon ;
         {%- set taxonomy_array = lsu_item.taxonomy.split(';') %}
         {%- set taxon_item = taxonomy_array[-1] %}
@@ -69,17 +69,24 @@ Variable:
         {%- endif %}
 
         {%- if taxon_classification | length > 0 %}
-        dwc:higherClassification {{ taxon_classification.join(' | ') | xsd("string") }} ;
+        {%- set clean_classification = [] %}
+            {%- for level in taxon_classification %}
+                {%- set level_rank_name = level.split('__') %}
+                {%- set level_name = level_rank_name[-1] %}
+                {{ clean_classification.append(level_name) }}
+            {%- endfor %}
+
+        dwc:higherClassification {{ clean_classification.join(' | ') | xsd("string") }} ;
         {%- endif %}
 .
 {%- endif %}
 {%- endfor %}
 
 {%- for ssu_item in sets['ssu_taxinfo'] %}
-<#{{ssu_item.taxid}}>
+<#{{ssu_item.OTU_ID}}>
     a prod:TaxonomicAnnotation ; 
     prod:ofSample {{ uri.sample(obs_id, env_package, source_mat_id) }} ;
-    dct:identifier <https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{ssu_item.taxid}}> ; 
+    dct:identifier <https://www.ncbi.nlm.nih.gov/taxonomy/?term={{ssu_item.taxid}}> ; 
     prod:otuID {{ssu_item.OTU_ID | xsd("integer")}} ; 
     prod:rRNA {{ssu_item.rRNA | xsd("double")}} ; 
     prod:geneticMarker prod_vocab:SSU ;
@@ -88,7 +95,7 @@ Variable:
 .
 
 {%- if ssu_item.taxid %}
-<https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{ssu_item.taxid}}>
+<https://www.ncbi.nlm.nih.gov/taxonomy/?term={{ssu_item.taxid}}>
     a dwc:Taxon, schema:Taxon ;
         {%- set taxonomy_array = ssu_item.taxonomy.split(';') %}
         {%- set taxon_item = taxonomy_array[-1] %}
@@ -120,7 +127,14 @@ Variable:
         {%- endif %}
 
         {%- if taxon_classification | length > 0 %}
-        dwc:higherClassification {{ taxon_classification.join(' | ') | xsd("string") }} ;
+        {%- set clean_classification = [] %}
+            {%- for level in taxon_classification %}
+                {%- set level_rank_name = level.split('__') %}
+                {%- set level_name = level_rank_name[-1] %}
+                {{ clean_classification.append(level_name) }}
+            {%- endfor %}
+
+        dwc:higherClassification {{ clean_classification.join(' | ') | xsd("string") }} ;
         {%- endif %}
 .
 {%- endif %}
