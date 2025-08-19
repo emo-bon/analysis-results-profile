@@ -31,7 +31,7 @@ Variable:
     dct:identifier <https://www.ncbi.nlm.nih.gov/taxonomy/?term={{lsu_item.taxid}}> ; 
     prod:otuID {{lsu_item.OTU_ID | xsd("integer")}} ;  
     prod:rRNA {{lsu_item.rRNA | xsd("double")}} ; 
-    prod:geneticMarker prod_vocab:LSU ;
+    prod:geneticMarker <http://purl.obolibrary.org/obo/GO_0015934> ;
 
     dct:isPartOf <> ; 
 .
@@ -89,7 +89,7 @@ Variable:
     dct:identifier <https://www.ncbi.nlm.nih.gov/taxonomy/?term={{ssu_item.taxid}}> ; 
     prod:otuID {{ssu_item.OTU_ID | xsd("integer")}} ; 
     prod:rRNA {{ssu_item.rRNA | xsd("double")}} ; 
-    prod:geneticMarker prod_vocab:SSU ;
+    prod:geneticMarker <http://purl.obolibrary.org/obo/GO_0015935> ;
 
     dct:isPartOf <> ;
 .
