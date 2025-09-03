@@ -17,13 +17,13 @@ Variable:
     - source_mat_id
 -#}
 
-{%- import 'macros/uri.ttl' as uri %}
+{%- import 'macros/endpoint.ttl' as endpoint %}
 
 {%- include './includes/prefixes.ttl' %}
 
 @base <{{ uri_to_crate ~ '/functional-annotation' }}> .
 
-{{ uri.sample(obs_id, env_package, source_mat_id) }}
+{{ endpoint.sample(obs_id, env_package, source_mat_id) }}
     rdfs:seeAlso <https://www.ebi.ac.uk/ena/browser/view/{{enanumber}}> ;
 . 
 
@@ -33,7 +33,7 @@ Variable:
     a prod:FunctionalAnnotation ; 
     dct:type prod_vocab:GO ; 
 
-    prod:ofSample {{ uri.sample(obs_id, env_package, source_mat_id) }} ;
+    prod:ofSample {{ endpoint.sample(obs_id, env_package, source_mat_id) }} ;
 
     dct:title {{row.sub_process | xsd('string')}} ; 
     prod:name {{row.sub_process | xsd('string')}} ; 
@@ -50,7 +50,7 @@ Variable:
     a prod:FunctionalAnnotation ; 
     dct:type prod_vocab:GO_SLIM ; 
 
-    prod:ofSample {{ uri.sample(obs_id, env_package, source_mat_id) }} ;
+    prod:ofSample {{ endpoint.sample(obs_id, env_package, source_mat_id) }} ;
 
     dct:title {{row.sub_process | xsd('string')}} ; 
     prod:name {{row.sub_process | xsd('string')}} ; 
@@ -67,7 +67,7 @@ Variable:
     a prod:FunctionalAnnotation ; 
     dct:type prod_vocab:InterPro ; 
 
-    prod:ofSample {{ uri.sample(obs_id, env_package, source_mat_id) }} ;  
+    prod:ofSample {{ endpoint.sample(obs_id, env_package, source_mat_id) }} ;  
 
     dct:title {{row['sequence_domain_region_name'] | xsd('string')}} ;
     dct:identifier <https://www.ebi.ac.uk/interpro/entry/InterPro/{{row.ID}}/> ;
@@ -82,7 +82,7 @@ Variable:
     a prod:FunctionalAnnotation ; 
     dct:type prod_vocab:KEGG ; 
 
-    prod:ofSample {{ uri.sample(obs_id, env_package, source_mat_id) }} ;
+    prod:ofSample {{ endpoint.sample(obs_id, env_package, source_mat_id) }} ;
     
     dct:title {{row.name | xsd('string')}} ; 
     dct:identifier <https://www.genome.jp/dbget-bin/www_bget?{{row.ID}}> ;  
@@ -97,7 +97,7 @@ Variable:
     a prod:FunctionalAnnotation ; 
     dct:type prod_vocab:PFAM ; 
 
-    prod:ofSample {{ uri.sample(obs_id, env_package, source_mat_id) }} ;
+    prod:ofSample {{ endpoint.sample(obs_id, env_package, source_mat_id) }} ;
 
     dct:title {{row.name | xsd('string')}} ; 
     dct:identifier <https://www.ebi.ac.uk/interpro/entry/pfam/{{row.ID}}/> ;
@@ -112,7 +112,7 @@ Variable:
     a prod:FunctionalAnnotation ; 
     dct:type prod_vocab:EGGNOG ; 
 
-    prod:ofSample {{ uri.sample(obs_id, env_package, source_mat_id) }} ;
+    prod:ofSample {{ endpoint.sample(obs_id, env_package, source_mat_id) }} ;
 
     dct:title {{row.name | xsd('string')}} ; 
     dct:identifier <http://eggnog6.embl.de/search/ogs/{{row.ID}}/> ;
