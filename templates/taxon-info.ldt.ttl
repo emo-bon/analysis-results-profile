@@ -12,14 +12,14 @@ Variable:
     - env_package
     - source_mat_id
 -#}
-{%- import 'macros/endpoint.ttl' as endpoint %}
+{%- import 'macros/refs.ttl' as refs %}
 
 {%- if ctrl.isFirst %}
 {%- include './includes/prefixes.ttl' %}
 
 @base <{{ uri_to_crate ~ '/taxonomy-summary' }}> .
 
-{{ endpoint.sample(obs_id, env_package, source_mat_id) }}
+{{ refs.sample(obs_id, env_package, source_mat_id) }}
     rdfs:seeAlso <https://www.ebi.ac.uk/ena/browser/view/{{enanumber}}> ;
 .
 {%- endif %}
@@ -27,7 +27,7 @@ Variable:
 {%- for lsu_item in sets['lsu_taxinfo'] %}
 <#{{lsu_item.OTU_ID}}>
     a prod:TaxonomicAnnotation ; 
-    prod:ofSample {{ endpoint.sample(obs_id, env_package, source_mat_id) }} ;
+    prod:ofSample {{ refs.sample(obs_id, env_package, source_mat_id) }} ;
     dct:identifier <https://www.ncbi.nlm.nih.gov/taxonomy/?term={{lsu_item.taxid}}> ; 
     prod:otuID {{lsu_item.OTU_ID | xsd("integer")}} ;  
     prod:rRNA {{lsu_item.rRNA | xsd("double")}} ; 
@@ -85,7 +85,7 @@ Variable:
 {%- for ssu_item in sets['ssu_taxinfo'] %}
 <#{{ssu_item.OTU_ID}}>
     a prod:TaxonomicAnnotation ; 
-    prod:ofSample {{ endpoint.sample(obs_id, env_package, source_mat_id) }} ;
+    prod:ofSample {{ refs.sample(obs_id, env_package, source_mat_id) }} ;
     dct:identifier <https://www.ncbi.nlm.nih.gov/taxonomy/?term={{ssu_item.taxid}}> ; 
     prod:otuID {{ssu_item.OTU_ID | xsd("integer")}} ; 
     prod:rRNA {{ssu_item.rRNA | xsd("double")}} ; 
