@@ -17,18 +17,18 @@ Variable:
 {%- if ctrl.isFirst %}
 {%- include './includes/prefixes.ttl' %}
 
-@base <{{ uri_to_crate ~ '/taxonomy-summary' }}> .
+@base {{ uri_to_crate ~ '/taxonomy-summary' | uri }} .
 
 {{ refs.sample(obs_id, env_package, source_mat_id) }}
-    rdfs:seeAlso <https://www.ebi.ac.uk/ena/browser/view/{{enanumber}}> ;
+    rdfs:seeAlso {{ "https://www.ebi.ac.uk/ena/browser/view/" ~ enanumber | uri }} ;
 .
 {%- endif %}
 
 {%- for lsu_item in sets['lsu_taxinfo'] %}
-<#{{lsu_item.OTU_ID}}>
+{{"#" ~ lsu_item.OTU_ID | uri }}
     a prod:TaxonomicAnnotation ; 
     prod:ofSample {{ refs.sample(obs_id, env_package, source_mat_id) }} ;
-    dct:identifier <https://www.ncbi.nlm.nih.gov/taxonomy/?term={{lsu_item.taxid}}> ; 
+    dct:identifier {{ "https://www.ncbi.nlm.nih.gov/taxonomy/?term=" ~ lsu_item.taxid | uri }} ; 
     prod:otuID {{lsu_item.OTU_ID | xsd("integer")}} ;  
     prod:rRNA {{lsu_item.rRNA | xsd("double")}} ; 
     prod:geneticMarker <http://purl.obolibrary.org/obo/GO_0015934> ;
@@ -37,7 +37,7 @@ Variable:
 .
 
 {%- if lsu_item.taxid %}
-<https://www.ncbi.nlm.nih.gov/taxonomy/?term={{lsu_item.taxid}}>
+{{ "https://www.ncbi.nlm.nih.gov/taxonomy/?term=" ~ lsu_item.taxid | uri }}
     a dwc:Taxon, schema:Taxon ;
         {%- set taxonomy_array = lsu_item.taxonomy.split(';') %}
         {%- set taxon_item = taxonomy_array[-1] %}
@@ -83,10 +83,10 @@ Variable:
 {%- endfor %}
 
 {%- for ssu_item in sets['ssu_taxinfo'] %}
-<#{{ssu_item.OTU_ID}}>
+{{"#" ~ ssu_item.OTU_ID | uri }}
     a prod:TaxonomicAnnotation ; 
     prod:ofSample {{ refs.sample(obs_id, env_package, source_mat_id) }} ;
-    dct:identifier <https://www.ncbi.nlm.nih.gov/taxonomy/?term={{ssu_item.taxid}}> ; 
+    dct:identifier {{ "https://www.ncbi.nlm.nih.gov/taxonomy/?term=" ~ ssu_item.taxid | uri }} ; 
     prod:otuID {{ssu_item.OTU_ID | xsd("integer")}} ; 
     prod:rRNA {{ssu_item.rRNA | xsd("double")}} ; 
     prod:geneticMarker <http://purl.obolibrary.org/obo/GO_0015935> ;
@@ -95,7 +95,7 @@ Variable:
 .
 
 {%- if ssu_item.taxid %}
-<https://www.ncbi.nlm.nih.gov/taxonomy/?term={{ssu_item.taxid}}>
+{{ "https://www.ncbi.nlm.nih.gov/taxonomy/?term=" ~ ssu_item.taxid | uri }}
     a dwc:Taxon, schema:Taxon ;
         {%- set taxonomy_array = ssu_item.taxonomy.split(';') %}
         {%- set taxon_item = taxonomy_array[-1] %}
