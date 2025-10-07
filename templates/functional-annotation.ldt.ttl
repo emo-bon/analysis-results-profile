@@ -21,7 +21,7 @@ Variable:
 
 {%- include './includes/prefixes.ttl' %}
 
-@base {{ uri_to_crate ~ '/functional-annotation' | uri }} .
+@base {{ uri_to_crate ~ '/functional-annotation/functional-annotation' | uri }} .
 
 {{ refs.sample(obs_id, env_package, source_mat_id) }}
     rdfs:seeAlso {{ "https://www.ebi.ac.uk/ena/browser/view/" ~ enanumber | uri }} ;

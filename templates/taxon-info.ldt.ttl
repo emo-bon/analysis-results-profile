@@ -17,7 +17,12 @@ Variable:
 {%- if ctrl.isFirst %}
 {%- include './includes/prefixes.ttl' %}
 
-@base {{ uri_to_crate ~ '/taxonomy-summary' | uri }} .
+{%- if sets['lsu_taxinfo'] %}
+@base {{ uri_to_crate ~ '/taxonomy-summary/LSU/LSU-taxonomy-summary' | uri }} .
+{%- endif %}
+{%- if sets['ssu_taxinfo'] %}
+@base {{ uri_to_crate ~ '/taxonomy-summary/SSU/SSU-taxonomy-summary' | uri }} .
+{%- endif %}
 
 {{ refs.sample(obs_id, env_package, source_mat_id) }}
     rdfs:seeAlso {{ "https://www.ebi.ac.uk/ena/browser/view/" ~ enanumber | uri }} ;
